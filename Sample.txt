@@ -1,0 +1,60 @@
+msg.txt: Hey, I have recently won a big lottery.I am willing to share the lottery money with you, if you help me bring it to the USA. Regards, Kenny.
+suspicious-words.txt: lottery money prize USA
+bad.txt: (EMPTY FILE)
+
+TCP:
+
+a. Successful exchange
+	Server:
+	[akhanal7@networklab1 src]$ java smsengineTCP 8591 suspicious-words.txt
+	######## Created a socket to use. ########
+
+	Client:
+	[akhanal7@networklab1 src]$ java smsclientTCP networklab1 8591 msg.txt
+	FROM SERVER: 4 0.13793103  lottery money USA
+
+b. Bad Connection
+	Client:
+	[akhanal7@networklab1 src]$ java smsclientTCP networklab1 8591 msg.txt
+	FROM SERVER: Failed to connect to the server. Please try again.
+
+c. Bad Message
+	Server:
+	[akhanal7@networklab1 src]$ java smsengineTCP 8591 suspicious-words.txt
+	######## Created a socket to use. ########
+
+	Client:
+	[akhanal7@networklab1 src]$ java smsclientTCP networklab1 8591 bad.txt
+	FROM SERVER: 0 -1 ERROR
+
+UDP:
+
+a. Successful exchange
+	Server:
+	[akhanal7@networklab1 src]$ java smsengineUDP 8591 suspicious-words.txt
+	######## Created a socket to use. ########
+
+	Client:
+	[akhanal7@networklab1 src]$ java smsclientUDP networklab1 8591 msg.txt
+	FROM SERVER: 4 0.13793103  lottery money USA
+
+b. Bad Connection
+	Client:
+	[akhanal7@networklab1 src]$ java smsclientUDP networklab1 8591 msg.txt
+	FROM SERVER: The server has not answered in the last two seconds.
+				 Retrying...
+				 The server has not answered in the last two seconds.
+			 	 Retrying...
+				 The server has not answered in the last two seconds.
+			 	 Retrying...
+
+				 The server did not respond. Please try again.
+
+c. Bad Message
+	Server:
+	[akhanal7@networklab1 src]$ java smsengineUDP 8591 suspicious-words.txt
+	######## Created a socket to use. ########
+
+	Client:
+	[akhanal7@networklab1 src]$ java smsclientUDP networklab1 8591 bad.txt
+	FROM SERVER: 0 -1 ERROR
